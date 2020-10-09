@@ -1,18 +1,20 @@
 package dev.juho.inventory.api.data;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import dev.juho.inventory.api.Item;
+import dev.juho.inventory.api.ItemOrder;
 
 public class DataManager {
 
@@ -22,7 +24,10 @@ public class DataManager {
     private Api api;
     private ItemStore itemStore;
 
+    private ItemOrder itemOrder;
+
     private DataManager() {
+        this.itemOrder = ItemOrder.LAST_UPDATED;
     }
 
     public static DataManager getInstance() {
@@ -49,17 +54,36 @@ public class DataManager {
 
     public void getItems(ItemListener listener) {
         api.checkConnectivity(context, isConnected -> {
-            if (isConnected) {
-                loadItemDataFromApi(listener);
-                return;
-            }
-
-            loadItemDataFromItemStore(listener);
+            loadItems(isConnected, response -> {
+                sortItems(response.itemList);
+                listener.onLoad(response);
+            });
         });
     }
 
     public interface ItemListener {
         void onLoad(ItemResponse response);
+    }
+
+    private void sortItems(List<Item> itemList) {
+        switch (itemOrder) {
+            case LAST_UPDATED:
+                itemList.sort((a, b) -> Long.compare(a.getLastUpdate(), b.getLastUpdate()));
+                Collections.reverse(itemList);
+                break;
+
+            case NAME:
+                Collections.sort(itemList, Collator.getInstance());
+        }
+    }
+
+    private void loadItems(boolean isConnected, ItemListener listener) {
+        if (isConnected) {
+            loadItemDataFromApi(listener);
+            return;
+        }
+
+        loadItemDataFromItemStore(listener);
     }
 
     private void loadItemDataFromApi(ItemListener listener) {

@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import dev.juho.inventory.R;
 import dev.juho.inventory.api.Item;
+import dev.juho.inventory.utils.TimeUtils;
 
 public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
 
@@ -33,7 +34,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         Item item = itemList.get(position);
 
         holder.name.setText(item.getName());
-        holder.lastUpdated.setText(Long.toString(item.getLastUpdate()));
+        holder.lastUpdated.setText(TimeUtils.timeSince(item.getLastUpdate()) + " since last update");
         holder.location.setText(item.getLocation());
         holder.quantity.setText(String.format(Locale.getDefault(), "%d", item.getCount()));
     }

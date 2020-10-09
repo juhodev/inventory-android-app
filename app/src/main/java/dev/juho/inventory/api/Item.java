@@ -47,4 +47,12 @@ public class Item {
         return itemData.optJSONArray("tags");
     }
 
+    public JSONObject toJSON() {
+        return itemData;
+    }
+
+    @Override
+    public String toString() {
+        return itemData.toString();
+    }
 }

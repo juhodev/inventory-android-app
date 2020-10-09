@@ -34,8 +34,8 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
 
         holder.name.setText(item.getName());
         holder.lastUpdated.setText(Long.toString(item.getLastUpdate()));
-        holder.location.setText(String.format("Location %s", item.getLocation()));
-        holder.quantity.setText(String.format(Locale.getDefault(), "Quantity %d", item.getCount()));
+        holder.location.setText(item.getLocation());
+        holder.quantity.setText(String.format(Locale.getDefault(), "%d", item.getCount()));
     }
 
     @Override

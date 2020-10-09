@@ -1,25 +1,20 @@
 package dev.juho.inventory;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import dev.juho.inventory.api.Api;
+import dev.juho.inventory.api.data.DataManager;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DataManager.getInstance().init(this);
 
         setContentView(R.layout.main_activity);
-
 //        setContentView(R.layout.activity_item_detail);
 //        Toolbar toolbar = findViewById(R.id.detail_toolbar);
 //        setSupportActionBar(toolbar);

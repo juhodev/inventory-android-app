@@ -1,11 +1,13 @@
-package dev.juho.inventory;
+package dev.juho.inventory.activities;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import dev.juho.inventory.R;
 import dev.juho.inventory.api.data.DataManager;
+import dev.juho.inventory.utils.ResourceLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataManager.getInstance().init(this);
+        ResourceLoader.getInstance().init(this);
 
         setContentView(R.layout.main_activity);
 //        setContentView(R.layout.activity_item_detail);

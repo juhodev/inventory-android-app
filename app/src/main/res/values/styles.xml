@@ -5,6 +5,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/BalsamiqStyle</item>
+        <item name="android:buttonStyle">@style/BalsamiqStyle</item>
+    </style>
+
+    <style name="BalsamiqStyle">
+        <item name="android:fontFamily">@font/balsamiq_sans</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

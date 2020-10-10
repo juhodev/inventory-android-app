@@ -15,6 +15,8 @@ import org.json.JSONObject;
 
 public class Api {
 
+    private final String serverAddress = "http://192.168.1.95:8080";
+
     protected Api() {
     }
 
@@ -31,7 +33,7 @@ public class Api {
     }
 
     public void checkConnectivity(Context context, ConnectivityListener listener) {
-        String url = getLocalhostAddress() + "/inventory";
+        String url = serverAddress + "/inventory";
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -48,7 +50,7 @@ public class Api {
     }
 
     private void getRequest(Context context, String endpoint, ApiListener listener) {
-        String url = getLocalhostAddress() + endpoint;
+        String url = serverAddress + endpoint;
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -67,15 +69,6 @@ public class Api {
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(request);
-    }
-
-    // TODO: Test if the local ip will just work
-    private String getLocalhostAddress() {
-        if (Build.FINGERPRINT.contains("generic")) {
-            return "http://10.0.2.2:8080";
-        } else {
-            return "http://192.168.1.95";
-        }
     }
 
     public static class Response {

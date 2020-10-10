@@ -1,6 +1,7 @@
 package dev.juho.inventory.api.data;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;

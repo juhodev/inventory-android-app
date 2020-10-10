@@ -46,6 +46,9 @@ public class ItemListFragment extends Fragment {
 
     private void loadItems() {
         DataManager.getInstance().getItems(response -> updateItems(response.getItemList()));
+        DataManager.getInstance().setOnItemsChangedListener(() -> {
+            DataManager.getInstance().getItems(response -> updateItems(response.getItemList()));
+        });
     }
 
     private void updateItems(List<Item> itemList) {

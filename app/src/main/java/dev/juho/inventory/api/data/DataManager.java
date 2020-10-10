@@ -1,7 +1,6 @@
 package dev.juho.inventory.api.data;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +25,8 @@ public class DataManager {
     private ItemStore itemStore;
 
     private ItemOrder itemOrder;
+
+    private OnItemsChangedListener onItemsChangedListener;
 
     private DataManager() {
         this.itemOrder = ItemOrder.LAST_UPDATED;
@@ -62,8 +63,24 @@ public class DataManager {
         });
     }
 
+    public void setItemOrder(ItemOrder itemOrder) {
+        this.itemOrder = itemOrder;
+
+        if (onItemsChangedListener != null) {
+            onItemsChangedListener.onChange();
+        }
+    }
+
+    public void setOnItemsChangedListener(OnItemsChangedListener listener) {
+        this.onItemsChangedListener = listener;
+    }
+
     public interface ItemListener {
         void onLoad(ItemResponse response);
+    }
+
+    public interface OnItemsChangedListener {
+        void onChange();
     }
 
     private void sortItems(List<Item> itemList) {
@@ -74,7 +91,8 @@ public class DataManager {
                 break;
 
             case NAME:
-                Collections.sort(itemList, Collator.getInstance());
+                itemList.sort((a, b) -> a.getName().compareTo(b.getName()));
+                break;
         }
     }
 

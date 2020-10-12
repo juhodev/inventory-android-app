@@ -8,6 +8,7 @@ public class Search {
 
     public static List<Item> filter(List<Item> itemList, String search, ItemOrder itemOrder) {
         if (itemList.isEmpty() || (search == null || search.isEmpty())) {
+            sortItems(itemList, itemOrder);
             return itemList;
         }
 

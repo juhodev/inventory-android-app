@@ -8,4 +8,6 @@
     <color name="gray_500">#A0AEC0</color>
     <color name="gray_600">#718096</color>
     <color name="gray_700">#4A5568</color>
+    <color name="gray_800">#2D3748</color>
+    <color name="indigo_600">#5A67D8</color>
 </resources>

@@ -15,6 +15,7 @@ import java.util.List;
 
 import dev.juho.inventory.api.Item;
 import dev.juho.inventory.api.ItemOrder;
+import dev.juho.inventory.api.Search;
 
 public class DataManager {
 
@@ -25,6 +26,7 @@ public class DataManager {
     private ItemStore itemStore;
 
     private ItemOrder itemOrder;
+    private String userSearch;
 
     private OnItemsChangedListener onItemsChangedListener;
 
@@ -57,10 +59,18 @@ public class DataManager {
     public void getItems(ItemListener listener) {
         api.checkConnectivity(context, isConnected -> {
             loadItems(isConnected, response -> {
-                sortItems(response.itemList);
+                response.itemList = Search.filter(response.itemList, userSearch, itemOrder);
                 listener.onLoad(response);
             });
         });
+    }
+
+    public void setUserSearch(String userSearch) {
+        this.userSearch = userSearch;
+
+        if (onItemsChangedListener != null) {
+            onItemsChangedListener.onChange();
+        }
     }
 
     public void setItemOrder(ItemOrder itemOrder) {
@@ -81,19 +91,6 @@ public class DataManager {
 
     public interface OnItemsChangedListener {
         void onChange();
-    }
-
-    private void sortItems(List<Item> itemList) {
-        switch (itemOrder) {
-            case LAST_UPDATED:
-                itemList.sort((a, b) -> Long.compare(a.getLastUpdate(), b.getLastUpdate()));
-                Collections.reverse(itemList);
-                break;
-
-            case NAME:
-                itemList.sort((a, b) -> a.getName().compareTo(b.getName()));
-                break;
-        }
     }
 
     private void loadItems(boolean isConnected, ItemListener listener) {

@@ -59,9 +59,17 @@ public class Search {
         String searchType = searchUpperCase.substring(0, colonIndex).toUpperCase();
         String search = searchUpperCase.substring(colonIndex + 1).toUpperCase();
 
+        if (search.isEmpty()) {
+            return itemList;
+        }
+
         switch (searchType) {
             case "TAG":
                 return tagSearch(itemList, search);
+
+            case "LOCATION":
+            case "LOC":
+                return locationSearch(itemList, search);
 
             default:
                 return itemList;
@@ -78,6 +86,18 @@ public class Search {
                     matchedItems.add(item);
                     break;
                 }
+            }
+        }
+
+        return matchedItems;
+    }
+
+    private static List<Item> locationSearch(List<Item> itemList, String locationUpperCase) {
+        List<Item> matchedItems = new ArrayList<>();
+
+        for (Item item : itemList) {
+            if (item.getLocation().equalsIgnoreCase(locationUpperCase)) {
+                matchedItems.add(item);
             }
         }
 

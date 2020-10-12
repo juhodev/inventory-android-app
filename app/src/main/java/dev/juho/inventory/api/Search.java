@@ -13,9 +13,15 @@ public class Search {
         }
 
         String searchUpperCase = search.toUpperCase();
-        List<Item> filteredItems = nameSearch(itemList, searchUpperCase);
-        sortItems(filteredItems, itemOrder);
+        List<Item> filteredItems;
 
+        if (searchUpperCase.contains(":")) {
+            filteredItems = typeSearch(itemList, searchUpperCase);
+        } else {
+            filteredItems = nameSearch(itemList, searchUpperCase);
+        }
+
+        sortItems(filteredItems, itemOrder);
         return filteredItems;
     }
 
@@ -38,6 +44,40 @@ public class Search {
         for (Item item : itemList) {
             if (item.getName().toUpperCase().startsWith(searchUpperCase)) {
                 matchedItems.add(item);
+            }
+        }
+
+        return matchedItems;
+    }
+
+    private static List<Item> typeSearch(List<Item> itemList, String searchUpperCase) {
+        int colonIndex = searchUpperCase.indexOf(":");
+        if (colonIndex == -1) {
+            return itemList;
+        }
+
+        String searchType = searchUpperCase.substring(0, colonIndex).toUpperCase();
+        String search = searchUpperCase.substring(colonIndex + 1).toUpperCase();
+
+        switch (searchType) {
+            case "TAG":
+                return tagSearch(itemList, search);
+
+            default:
+                return itemList;
+        }
+    }
+
+    private static List<Item> tagSearch(List<Item> itemList, String tagUpperCase) {
+        List<Item> matchedItems = new ArrayList<>();
+
+        for (Item item : itemList) {
+            for (int i = 0; i < item.getTags().length(); i++) {
+                String tag = item.getTags().optString(i, "^^^^^^").toUpperCase();
+                if (tag.startsWith(tagUpperCase)) {
+                    matchedItems.add(item);
+                    break;
+                }
             }
         }
 

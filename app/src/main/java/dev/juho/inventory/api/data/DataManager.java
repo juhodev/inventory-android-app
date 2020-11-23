@@ -57,6 +57,13 @@ public class DataManager {
     }
 
     public void getItems(ItemListener listener) {
+        // First load the items offline
+        loadItems(false, response -> {
+            response.itemList = Search.filter(response.itemList, userSearch, itemOrder);
+            listener.onLoad(response);
+        });
+
+        // After that check for connectivity and update items if a connection can be established
         api.checkConnectivity(context, isConnected -> {
             loadItems(isConnected, response -> {
                 response.itemList = Search.filter(response.itemList, userSearch, itemOrder);

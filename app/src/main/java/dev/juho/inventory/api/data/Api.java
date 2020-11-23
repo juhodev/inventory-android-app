@@ -15,7 +15,8 @@ import org.json.JSONObject;
 
 public class Api {
 
-    private final String serverAddress = "http://192.168.1.95:8080";
+    // TODO: I need to make this address changeable from inside the app
+    private final String serverAddress = "http://192.168.1.141:8080";
 
     protected Api() {
     }

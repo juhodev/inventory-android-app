@@ -10,4 +10,6 @@
     <color name="gray_700">#4A5568</color>
     <color name="gray_800">#2D3748</color>
     <color name="indigo_600">#5A67D8</color>
+    <color name="green_500">#48BB78</color>
+    <color name="yellow_400">#F6E05E</color>
 </resources>

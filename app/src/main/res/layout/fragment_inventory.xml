@@ -2,7 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_700">
+    android:background="@color/gray_700"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/view_connectivity_color"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/blue_500"
+        android:visibility="invisible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/inventory_items"

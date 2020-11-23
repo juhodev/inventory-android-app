@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import dev.juho.inventory.R;
 import dev.juho.inventory.api.Item;
@@ -23,6 +25,7 @@ import dev.juho.inventory.fragments.adapters.ItemRecyclerViewAdapter;
 public class ItemListFragment extends Fragment {
 
     private List<Item> itemList;
+    private Timer currentConnectivityTimer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,14 +43,36 @@ public class ItemListFragment extends Fragment {
         RecyclerView recyclerView = fragmentView.findViewById(R.id.inventory_items);
         recyclerView.setAdapter(new ItemRecyclerViewAdapter(itemList));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        updateConnectivityColor(fragmentView, false);
 
         return fragmentView;
+    }
+
+    private void updateConnectivityColor(View view, boolean online) {
+        View connectivityColorView = view.findViewById(R.id.view_connectivity_color);
+        connectivityColorView.setBackgroundResource(online ? R.color.green_500 : R.color.yellow_400);
+        connectivityColorView.setVisibility(View.VISIBLE);
+
+        if (currentConnectivityTimer != null) {
+            currentConnectivityTimer.cancel();
+        }
+
+        currentConnectivityTimer = new Timer();
+        currentConnectivityTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                connectivityColorView.setVisibility(View.INVISIBLE);
+            }
+        }, 1000 * 2);
     }
 
     private void loadItems() {
         DataManager.getInstance().getItems(response -> updateItems(response.getItemList()));
         DataManager.getInstance().setOnItemsChangedListener(() -> {
-            DataManager.getInstance().getItems(response -> updateItems(response.getItemList()));
+            DataManager.getInstance().getItems(response -> {
+                updateItems(response.getItemList());
+                updateConnectivityColor(getActivity().findViewById(R.id.item_list_fragment), !response.isOfflineData());
+            });
         });
     }
 
